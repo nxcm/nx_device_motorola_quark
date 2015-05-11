@@ -1,0 +1,20 @@
+[
+  {
+    "remote":      "github",
+    "repository": "CyanogenMod/android_device_qcom_common",
+    "target_path": "device/qcom/common",
+    "revision":   "cm-12.1"
+  },
+  {
+    "remote":      "github",
+    "repository": "CyanogenMod/android_kernel_motorola_apq8084",
+    "target_path": "kernel/motorola/apq8084",
+    "revision":   "cm-12.1"
+  },
+  {
+    "remote":      "github",
+    "repository":  "TheMuppets/proprietary_vendor_motorola",
+    "target_path": "vendor/motorola",
+    "revision":   "cm-12.1"
+  }
+]
