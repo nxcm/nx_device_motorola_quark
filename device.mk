@@ -106,10 +106,10 @@ PRODUCT_PACKAGES += \
     charger \
     charger_res_images
 
-# CMActions
+# NXActions
 PRODUCT_PACKAGES += \
-    libjni_CMActions \
-    CMActions
+    libjni_NXActions \
+    NXActions
 
 # CRDA
 PRODUCT_PACKAGES += \

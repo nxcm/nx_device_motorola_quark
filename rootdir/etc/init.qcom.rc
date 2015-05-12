@@ -32,7 +32,7 @@ on early-init
     chown system system /sys/kernel/debug/kgsl/proc
 
     # Set boot up stage I/O scheduler
-    write /sys/block/mmcblk0/queue/scheduler deadline
+    write /sys/block/mmcblk0/queue/scheduler cfq
 
     # Set permissions for persist partition
     mkdir /persist 0771 system system
@@ -188,6 +188,10 @@ on post-fs-data
     # Display calibration
     chown system system /sys/devices/virtual/graphics/fb0/rgb
     chmod 0660 /sys/devices/virtual/graphics/fb0/rgb
+
+    # Vibrator strength
+    chown system system /sys/vibrator/pwmvalue
+    chmod 0644 /sys/vibrator/pwmvalue
 
     setprop vold.post_fs_data_done 1
 
@@ -455,10 +459,10 @@ on property:sys.boot_completed=1
     write /sys/module/msm_pm/modes/cpu2/retention/suspend_enabled 1
     write /sys/module/msm_pm/modes/cpu3/retention/suspend_enabled 1
     write /sys/module/msm_thermal/core_control/enabled 0
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor interactive
-    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor interactive
-    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor interactive
-    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor interactive
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor intelliactive
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor intelliactive
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor intelliactive
+    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor intelliactive
     write /sys/module/msm_thermal/core_control/enabled 1
     write /sys/devices/system/cpu/cpufreq/interactive/io_is_busy 1
 
@@ -476,6 +480,12 @@ on property:sys.boot_completed=1
     write /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq 300000
     write /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq 300000
     write /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq 300000
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 2649600
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq 2649600
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq 2649600
+    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq 2649600
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
     write /sys/devices/system/cpu/cpufreq/interactive/up_threshold_any_cpu_load 75
     write /sys/devices/system/cpu/cpufreq/interactive/up_threshold_any_cpu_freq 1728000
     chown root system /sys/devices/system/cpu/mfreq
@@ -488,16 +498,51 @@ on property:sys.boot_completed=1
     chmod 664 /sys/devices/system/cpu/cpu3/online
     write /dev/cpuctl/apps/cpu.notify_on_migrate 1
 
+    # Intelliactive Governor
+
+    chown system system /sys/devices/system/cpu/cpufreq/intelliactive/timer_rate
+    chmod 0660 /sys/devices/system/cpu/cpufreq/intelliactive/timer_rate
+    chown system system /sys/devices/system/cpu/cpufreq/intelliactive/timer_slack
+    chmod 0660 /sys/devices/system/cpu/cpufreq/intelliactive/timer_slack
+    chown system system /sys/devices/system/cpu/cpufreq/intelliactive/min_sample_time
+    chmod 0660 /sys/devices/system/cpu/cpufreq/intelliactive/min_sample_time
+    chown system system /sys/devices/system/cpu/cpufreq/intelliactive/hispeed_freq
+    chmod 0660 /sys/devices/system/cpu/cpufreq/intelliactive/hispeed_freq
+    chown system system /sys/devices/system/cpu/cpufreq/intelliactive/target_loads
+    chmod 0660 /sys/devices/system/cpu/cpufreq/intelliactive/target_loads
+    chown system system /sys/devices/system/cpu/cpufreq/intelliactive/go_hispeed_load
+    chmod 0660 /sys/devices/system/cpu/cpufreq/intelliactive/go_hispeed_load
+    chown system system /sys/devices/system/cpu/cpufreq/intelliactive/above_hispeed_delay
+    chmod 0660 /sys/devices/system/cpu/cpufreq/intelliactive/above_hispeed_delay
+    chown system system /sys/devices/system/cpu/cpufreq/intelliactive/boost
+    chmod 0660 /sys/devices/system/cpu/cpufreq/intelliactive/boost
+    chown system system /sys/devices/system/cpu/cpufreq/intelliactive/boostpulse
+    chmod 0660 /sys/devices/system/cpu/cpufreq/intelliactive/boostpulse
+    chown system system /sys/devices/system/cpu/cpufreq/intelliactive/boostpulse_duration
+    chmod 0660 /sys/devices/system/cpu/cpufreq/intelliactive/boostpulse_duration
+    chown system system /sys/devices/system/cpu/cpufreq/intelliactive/io_is_busy
+    chmod 0660 /sys/devices/system/cpu/cpufreq/intelliactive/io_is_busy
+    chown system system /sys/devices/system/cpu/cpufreq/intelliactive/sync_freq
+    chmod 0660 /sys/devices/system/cpu/cpufreq/intelliactive/sync_freq
+    chown system system /sys/devices/system/cpu/cpufreq/intelliactive/up_threshold_any_cpu_freq
+    chmod 0660 /sys/devices/system/cpu/cpufreq/intelliactive/up_threshold_any_cpu_freq
+    chown system system /sys/devices/system/cpu/cpufreq/intelliactive/up_threshold_any_cpu_load
+    chmod 0660 /sys/devices/system/cpu/cpufreq/intelliactive/up_threshold_any_cpu_load
+    chown system system /sys/devices/system/cpu/cpufreq/intelliactive/sampling_down_factor
+    chmod 0660 /sys/devices/system/cpu/cpufreq/intelliactive/sampling_down_factor
+    chown system system /sys/devices/system/cpu/cpufreq/intelliactive/two_phase_freq
+    chmod 0660 /sys/devices/system/cpu/cpufreq/intelliactive/two_phase_freq
+
     # Configure the cpu-boost module
-    write /sys/module/cpu_boost/parameters/boost_ms 20
-    write /sys/module/cpu_boost/parameters/sync_threshold 1728000
-    write /sys/module/cpu_boost/parameters/input_boost_freq 1497600
+    # write /sys/module/cpu_boost/parameters/boost_ms 20
+    write /sys/module/cpu_boost/parameters/sync_threshold 1574400
+    write /sys/module/cpu_boost/parameters/input_boost_freq 1190400
     write /sys/module/cpu_boost/parameters/input_boost_ms 40
-    write /sys/module/cpu_boost/parameters/plug_boost_freq 1728000
+    write /sys/module/cpu_boost/parameters/plug_boost_freq 1574400
     write /sys/module/cpu_boost/parameters/plug_boost_ms 5
 
     # Post boot services
-    start mpdecision
+    # start mpdecision
 
 # corefile limit and ETB enabling
 on property:persist.debug.trace=1
@@ -835,3 +880,55 @@ service atfwd /system/bin/ATFWD-daemon
     class late_start
     user system
     group system radio
+
+# Powersave
+on property:sys.perf.profile=0
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor intelliactive
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor intelliactive
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor intelliactive
+    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor intelliactive
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 300000
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq 300000
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq 300000
+    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq 300000
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1190400
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq 1190400
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq 1190400
+    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq 1190400
+    write /sys/module/msm_hotplug/max_cpus_online 2
+
+# Balanced
+on property:sys.perf.profile=1
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor intelliactive
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor intelliactive
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor intelliactive
+    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor intelliactive
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 300000
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq 300000
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq 300000
+    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq 300000
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 2649600
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq 2649600
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq 2649600
+    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq 2649600
+    write /sys/module/msm_hotplug/max_cpus_online 4
+
+# High performance
+on property:sys.perf.profile=2
+    write /sys/devices/system/cpu/cpu0/online 1
+    write /sys/devices/system/cpu/cpu1/online 1
+    write /sys/devices/system/cpu/cpu2/online 1
+    write /sys/devices/system/cpu/cpu3/online 1
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor performance
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor performance
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor performance
+    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor performance
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 300000
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq 300000
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq 300000
+    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq 300000
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 2649600
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq 2649600
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq 2649600
+    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq 2649600
+    write /sys/module/msm_hotplug/max_cpus_online 4

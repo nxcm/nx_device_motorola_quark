@@ -6,10 +6,9 @@
     "revision":   "cm-12.1"
   },
   {
-    "remote":      "github",
-    "repository": "CyanogenMod/android_kernel_motorola_apq8084",
-    "target_path": "kernel/motorola/apq8084",
-    "revision":   "cm-12.1"
+    "remote":     "bitbucket",
+    "repository": "nxcm/nx_kernel_motorola_apq8084",
+    "target_path": "kernel/motorola/apq8084"
   },
   {
     "remote":      "github",
