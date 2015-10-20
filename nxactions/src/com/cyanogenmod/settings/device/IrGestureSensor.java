@@ -80,11 +80,8 @@ public class IrGestureSensor implements ScreenStateNotifier, SensorEventListener
     public void onSensorChanged(SensorEvent event) {
         int gesture = (int) event.values[1];
 
-        if ((gesture == IR_GESTURE_APPROACH) && mGestureIrEnabled) {
-            Log.d(TAG, "event: [" + event.values.length + "]: " + event.values[0] + ", " +
-                event.values[1] + ", " + event.values[2]);
+        if ((gesture == IR_GESTURE_APPROACH) && mGestureIrEnabled)
             mSensorAction.action();
-        }
     }
 
     @Override
