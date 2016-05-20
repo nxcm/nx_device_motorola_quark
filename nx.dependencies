@@ -1,0 +1,24 @@
+[
+  {
+    "remote":      "github",
+    "repository": "CyanogenMod/android_device_qcom_common",
+    "target_path": "device/qcom/common",
+    "revision":   "cm-13.0"
+  },
+  {
+    "remote":     "bitbucket",
+    "repository": "nexusxm/kernel_motorola_apq8084",
+    "target_path": "kernel/motorola/apq8084"
+  },
+  {
+    "remote":      "bitbucket",
+    "repository":  "nexusxm/proprietary_vendor_motorola",
+    "target_path": "vendor/motorola"
+  },
+  {
+    "remote":      "github",
+    "repository": "CyanogenMod/android_external_connectivity",
+    "target_path": "external/connectivity",
+    "revision":   "cm-13.0"
+  }
+]
